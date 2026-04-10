@@ -47,14 +47,14 @@ Whether you've made a mistake with someone special or need a creative way to apo
 Simply open the app and interact with the beautiful interface:
 
 ```
-https://your-deployed-url/
+https://zelvior.github.io/Mndr/
 ```
 
 ### Personalized Links
 Create custom apology messages with URL parameters:
 
 ```
-https://your-deployed-url/?to=Alex&from=Jordan
+https://zelvior.github.io/Mndr/?to=Alex&from=Jordan
 ```
 
 **Parameters:**
@@ -63,7 +63,7 @@ https://your-deployed-url/?to=Alex&from=Jordan
 
 ### Example
 ```
-https://your-deployed-url/?to=Sarah&from=Mike
+https://zelvior.github.io/Mndr/?to=Sarah&from=Mike
 ```
 
 ---
