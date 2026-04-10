@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>I'm So Sorry</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap');
+
+        :root {
+            --blue-main: #60a5fa;
+            --blue-light: #93c5fd;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 100%);
+            height: 100vh;
+            height: 100dvh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+            touch-action: manipulation;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .script-font {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            animation: moveUp 5s linear forwards;
+            filter: opacity(0.6);
+        }
+
+        @keyframes moveUp {
+            0% { transform: translateY(110vh) scale(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-20vh) scale(1.2) rotate(180deg); opacity: 0; }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+            min-height: 80px;
+        }
+
+        #no-btn {
+            transition: all 0.2s ease-out;
+            white-space: nowrap;
+        }
+
+        .pulse-icon {
+            font-size: 4rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-elements" class="fixed inset-0 pointer-events-none"></div>
+
+    <!-- Intro Loader -->
+    <div id="loader-card" class="glass-card">
+        <div class="pulse-icon">🥺</div>
+        <h2 class="text-xl font-bold text-blue-600 mt-4">Initiating Forgiveness Protocol...</h2>
+        <div class="w-full bg-blue-100 h-2 rounded-full mt-6 overflow-hidden">
+            <div id="fill" class="h-full bg-blue-500 w-0 transition-all duration-1500"></div>
+        </div>
+        <p id="status-text" class="text-blue-400 text-xs mt-3 uppercase tracking-widest">Searching for a second chance</p>
+    </div>
+
+    <!-- Main Apology Card -->
+    <div id="main-card" class="glass-card hidden opacity-0 translate-y-10">
+        <div class="text-5xl mb-4">🙏</div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-1">Hey <span id="to-name" class="script-font text-blue-500 text-4xl">Dear</span></h1>
+        <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-6">
+            I've been thinking a lot about what happened, and I'm truly sorry. I value you more than words can say, and I'd hate for a mistake to stand between us.
+        </p>
+        <h2 class="text-xl font-bold text-gray-800 mb-8">Can you find it in your heart to forgive me?</h2>
+
+        <div class="btn-container flex-col sm:flex-row">
+            <button id="yes-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-2xl font-bold text-lg shadow-lg transform transition active:scale-95 w-full">
+                Yes, I Forgive You 💙
+            </button>
+            <button id="no-btn" class="bg-white border-2 border-blue-100 text-blue-300 px-8 py-3 rounded-2xl font-bold text-lg w-full">
+                No
+            </button>
+        </div>
+        
+        <p class="mt-8 text-xs text-gray-400 italic">Sincerely yours, <span id="from-name">Someone who messed up</span></p>
+    </div>
+
+    <!-- Accepted Card -->
+    <div id="success-card" class="glass-card hidden opacity-0 translate-y-10">
+        <div class="text-6xl mb-4">✨</div>
+        <h1 class="text-4xl font-bold text-blue-500 script-font mb-4">Thank You</h1>
+        <p class="text-gray-700 mb-6">
+            You have no idea how much this means to me. I promise to do better and make it up to you every day. 💙
+        </p>
+        <div class="bg-blue-50 p-4 rounded-xl mb-6 border border-blue-100">
+            <p class="text-blue-600 font-semibold italic">"A fresh start begins now."</p>
+        </div>
+        <button onclick="location.reload()" class="text-blue-400 text-xs font-bold uppercase tracking-widest hover:text-blue-600">Close Message</button>
+    </div>
+
+    <script>
+    // ==========================================
+    // CONFIGURATION
+    // ==========================================
+    const EMAILJS_PUBLIC_KEY = "2IfRncqMgnvHrB0l2"; 
+    const EMAILJS_SERVICE_ID = "service_3fxj6rr"; 
+    const EMAILJS_TEMPLATE_ID = "template_z3bl6q4"; 
+    // ==========================================
+
+    (function() {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
+
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to') || 'Favorite Person';
+    const from = params.get('from') || 'Me';
+
+    document.getElementById('to-name').innerText = to;
+    document.getElementById('from-name').innerText = from;
+
+    // Loading Animation
+    window.addEventListener('load', () => {
+        const fill = document.getElementById('fill');
+        const status = document.getElementById('status-text');
+        
+        setTimeout(() => {
+            fill.style.width = '100%';
+            setTimeout(() => { status.innerText = "Empathy levels high: 100%"; }, 1200);
+        }, 500);
+
+        setTimeout(() => {
+            const loaderCard = document.getElementById('loader-card');
+            const mainCard = document.getElementById('main-card');
+            
+            loaderCard.classList.add('opacity-0', 'scale-90');
+            setTimeout(() => {
+                loaderCard.classList.add('hidden');
+                mainCard.classList.remove('hidden');
+                setTimeout(() => {
+                    mainCard.classList.remove('opacity-0', 'translate-y-10');
+                }, 50);
+            }, 500);
+        }, 4000);
+    });
+
+    // Floating Soothing Elements
+    function createFloatie() {
+        const el = document.createElement('div');
+        el.innerHTML = ['☁️', '✨', '💧', '🌿', '🤍'][Math.floor(Math.random() * 5)];
+        el.className = 'floating-element';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (Math.random() * 2 + 4) + 's';
+        el.style.fontSize = (Math.random() * 15 + 15) + 'px';
+        document.getElementById('bg-elements').appendChild(el);
+        setTimeout(() => el.remove(), 5000);
+    }
+    setInterval(createFloatie, 400);
+
+    // Playful No Button Logic (Apology Style)
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    let noCount = 0;
+    const noMessages = [
+        "No", 
+        "Are you sure? 😔", 
+        "Please reconsider...", 
+        "I'll make cookies!", 
+        "I'm really sorry...", 
+        "One more chance?", 
+        "I'll be on my best behavior!", 
+        "Don't be mean... 🥺", 
+        "Click Yes please?"
+    ];
+
+    const moveNoButton = () => {
+        noBtn.classList.add('shake');
+        setTimeout(() => noBtn.classList.remove('shake'), 300);
+
+        const padding = 30; 
+        const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+        const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+        const x = Math.max(padding, Math.random() * maxX);
+        const y = Math.max(padding, Math.random() * maxY);
+        
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+        noBtn.style.zIndex = '100';
+
+        if (noCount < noMessages.length - 1) {
+            noCount++;
+            noBtn.innerText = noMessages[noCount];
+        }
+
+        // Make Yes button bigger as they refuse
+        const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+        if (currentSize < 45) {
+            yesBtn.style.fontSize = (currentSize + 1.5) + 'px';
+            yesBtn.style.padding = (parseFloat(window.getComputedStyle(yesBtn).paddingTop) + 1) + 'px ' + (parseFloat(window.getComputedStyle(yesBtn).paddingLeft) + 3) + 'px';
+        }
+    };
+
+    noBtn.addEventListener('mouseover', () => { if (window.innerWidth > 768) moveNoButton(); });
+    noBtn.addEventListener('click', moveNoButton);
+
+    // YES BUTTON LOGIC
+    yesBtn.addEventListener('click', () => {
+        const mainCard = document.getElementById('main-card');
+        const successCard = document.getElementById('success-card');
+        
+        const templateParams = {
+            from_name: from,
+            to_name: to,
+            message: `${to} just accepted the apology and clicked YES! 💙`
+        };
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+            .then(() => console.log('Apology accepted notification sent.'))
+            .catch((err) => console.error('Failed to notify:', err));
+
+        mainCard.classList.add('opacity-0', 'scale-90');
+        setTimeout(() => {
+            mainCard.classList.add('hidden');
+            successCard.classList.remove('hidden');
+            setTimeout(() => {
+                successCard.classList.remove('opacity-0', 'translate-y-10');
+                triggerMagic();
+            }, 50);
+        }, 500);
+    });
+
+    function triggerMagic() {
+        for(let i=0; i<60; i++) {
+            setTimeout(() => {
+                const c = document.createElement('div');
+                c.innerText = ['✨', '💙', '🤍', '🌿'][Math.floor(Math.random() * 4)];
+                c.className = 'fixed text-2xl animate-pulse pointer-events-none';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.top = Math.random() * 100 + 'vh';
+                c.style.zIndex = '1000';
+                document.body.appendChild(c);
+                const anim = c.animate([
+                    { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+                    { transform: 'scale(2.5) rotate(180deg)', opacity: 0 }
+                ], { duration: 1500 + Math.random() * 1000 });
+                anim.onfinish = () => c.remove();
+            }, i * 40);
+        }
+    }
+</script>
+</body>
+</html>
